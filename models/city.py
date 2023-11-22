@@ -1,27 +1,19 @@
 #!/usr/bin/python3
-"""This is the user class"""
-from sqlalchemy.ext.declarative import declarative_base
+"""This is the city class"""
+import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.place import Place
-from models.review import Review
 
 
-class User(BaseModel, Base):
-    """This is the class for user
+class City(BaseModel, Base):
+    """This is the class for City
     Attributes:
-        email: email address
-        password: password for you login
-        first_name: first name
-        last_name: last name
+        state_id: The state id
+        name: input name
     """
-    __tablename__ = "users"
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128))
-    last_name = Column(String(128))
-    places = relationship("Place", cascade='all, delete, delete-orphan',
-                          backref="user")
-    reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                           backref="user")
+    # initialize class for file/db storage type
+    __tablename__ = 'cities'
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    places = relationship('Place', cascade='all, delete', backref='cities')
